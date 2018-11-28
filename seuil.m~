@@ -1,0 +1,28 @@
+function [w] = seuil(data)
+%MY_HISTOGRAM Summary of this function goes here
+%   Detailed explanation goes here
+
+% Calcul de l'histogramme 
+[N,M] = size(data)
+for k = 0:255
+    hist(k+1)=sum(data==k);
+end
+
+
+% Calcul du seuil d'Otsu
+temp = 0;
+for k=0:255
+   for i=1:k+1
+       temp = temp + hist(i);
+   end
+   w(k+1)=temp/sum(hist);
+end
+
+for k=0:255
+   for i=1:k+1
+       temp = temp + hist(i);
+   end
+   w(k+1)=temp/sum(hist);
+end
+
+
