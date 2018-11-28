@@ -12,8 +12,14 @@ imshow(A);
 %imtool(A)
 
 
-[I,mat] = rayon(point1, point2,A);
+[I,mat] = rayon(point2, point1,A);
 seuil = otsu_method(I);
+mat =flipud(mat);
+%Dernier point = premier et inversement
+extremite = rayon2binaire(I,seuil);
 
-signature = bin_signature(I,seuil);
+mat = mat(:,extremite(1):extremite(2));
+
+
+
 
