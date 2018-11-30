@@ -8,16 +8,16 @@ N=floor(sqrt( (p1(1)-p2(1))^2 + (p1(2)-p2(2))^2 ));
 mat_rayon = [];
 
 for i=0:N-1
-    mat_rayon= [mat_rayon p1+i/(N-1)*(p2-p1)];
+    mat_rayon= [mat_rayon round(p1+i/(N-1)*(p2-p1))];
    
 end
 
 % Intensité de chaque point
 B=double(255-rgb2gray(A));
 I=[];
-[m, n] = size(B);
+
 for k=1:length(mat_rayon)
-    I = [I; B(round(mat_rayon(1,k)), round(mat_rayon(2,k)))];
+    I = [I; B(mat_rayon(2,k), mat_rayon(1,k))]; %La matrice se présente de la forme Y*X pour les coordonnées
 end
 
 

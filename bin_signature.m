@@ -6,14 +6,13 @@ function [signature] = bin_signature(mat_intensite,seuil)
 %Définition d'un sueil 
 
 mat_bin1 = mat_intensite>seuil;
-plot(mat_bin1)
 
 %On récupère le premier et dernier pixel noir correspondant au début et à
 %la fin du code barre
 
 extremite = find(mat_bin1==1);
 signature = mat_bin1(extremite(1):extremite(end));
-
+plot(signature);
 
 
 end
