@@ -1,41 +1,35 @@
-  %% Images
+clear; close all; clc; dbstop if error;
+    
+%% Images
 
-clear all
-close all
-clc
-
-%Chargement des images
+ %Chargement des images
 A = imread('cb1.jpg');
 imshow(A);
-[x y] = ginput(2); %x contient les x1 et x2 et y les y1 et y2
 
-p1 =[x(1); y(1)]; %Poijt de gauche (premier point)
-p2 =[x(2); y(2)];%Point de droite
+% Prise du segment
+[x, y] = ginput(2); 
 
+p1 =[x(1); y(1)]; % Premier point tracé
+p2 =[x(2); y(2)]; % Dernier point tracé
 
-[I1,mat] = rayon(p1, p2,A); %Récupération de la matrice d'intensité et 
-                           %de la matrice contenant les positions du rayons
+%% Extraction de la signature le long du rayon
 
-seuil = otsu_method(I1); %Seuil de binarisation pour binariser les signatures
+% Matrice contenant les coordonnées de chaque point
+coord_rayon = coord_rayon(p1, p2, A);
 
-extremite = rayon2binaire(I1,seuil); %Récupération des points de début 
-                                    %et fin de la première signature
+% Matrice d'intensité binéarisée 
+I=intensite(A, coord_rayon);
+I_bin=binarisation(I); 
 
-mat = mat(:,extremite(1):extremite(2)); %Nouvelle matrice contenant uniquement
-                                        %les points utiles
-                                        
-%On récupère la matrice et on en re extrait la matrice d'intensité.
-new_p1=[mat(1,1);mat(2,1)]; 
-new_p2=[mat(1,end);mat(2,end)];
-
-[I2, mat_2] = rayon(new_p1,new_p2,A); % Récupération de la nouvelle matrice
-                                      %intensité à échantilloner
-
-signature = bin_signature(I2,seuil); %Ne sert à rien
+% Récupération de la partie utile 
+noirs = find(I_bin==1);
+extremites = [noirs(1);noirs(end)]; % On récupère le premier et dernier pixel noir 
+%coord_rayon = coord_rayon(:,extremites(1):extremites(2));
 
 
 
-                                        
+
+
 
 
 
