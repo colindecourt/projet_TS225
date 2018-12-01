@@ -41,7 +41,12 @@ u=unite_base(signature); % Peut être à optimiser car u=95 trés souvent
 signature_surech=surechantillonage(u, signature); 
 
 % Binarisation de la nouvelle signature
-signature_bin= binarisation(signature_surech);
+s_CB= binarisation(signature_surech);
+
+%% Identification des chiffres codés dans la signature
+
+% Identification des différentes parties du code 
+[garde_norm1, sp_part1, garde_ctr, sp_part2, garde_norm2]=partitions_code(s_CB, u);
 
 
 %% Affichage 
@@ -52,7 +57,7 @@ subplot(2,1,1), plot(I_bin);
 title('Signature 1 binéarisée');
 
 % Affichage de l'intensité des pixels utiles
-subplot(2,1,2), plot(signature_bin);
+subplot(2,1,2), plot(s_CB);
 title('Signature 2 binéarisée');
 
 
