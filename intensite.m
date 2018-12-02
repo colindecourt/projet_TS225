@@ -7,7 +7,7 @@ I=[];
 
 % Calcul de la matrice d'intensité
 for k=1:length(coord_rayon)
-    I = [I; img_gris(coord_rayon(2,k), coord_rayon(1,k))]; % Taille: x*y
+    I = [I; img_gris(coord_rayon(2,k), coord_rayon(1,k))]; %Taille : u*length(coord_rayon) x 1
 end
 
 end

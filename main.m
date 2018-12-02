@@ -34,36 +34,38 @@ new_p2=mat_rayon(:,noirs(end));
 mat_rayon = coord_rayon(new_p1, new_p2, A);
 
 % Nouvelle matrice intensité utile
-signature=intensite(A, mat_rayon);
+I=intensite(A, mat_rayon);
 
 % Unité de base u et échantillonage
-u=unite_base(signature); % Peut être à optimiser car u=95 trés souvent
-signature_surech=surechantillonage(u, signature); 
+u=unite_base(I); % Peut être à optimiser car u=95 trés souvent
+I_surech=surechantillonage(u, I); 
 
 % Binarisation de la nouvelle signature
-s_CB= binarisation(signature_surech);
+s_CB= binarisation(I_surech);
 
 %% Identification des chiffres codés dans la signature
 
 % Identification des différentes parties du code 
 [garde_norm1, sp_part1, garde_ctr, sp_part2, garde_norm2]=partitions_code(s_CB, u);
+sp=[sp_part1;sp_part2];
 
 % Construction des signatures théoriques dilatées en fonction de u
-[element_A, element_B, element_C]=signature_th(u);
+[s_th]=signature_th(u);
 
-
+% Identification de l'élément et des chiffres 2 à 12
+chiffres=identification_chiffres(sp, s_th);
 
 
 %% Affichage 
-figure
-
-% Affichage de l'intensité des pixels traversant tout le rayon
-subplot(2,1,1), plot(I_bin);
-title('Signature 1 binéarisée');
-
-% Affichage de l'intensité des pixels utiles
-subplot(2,1,2), plot(s_CB);
-title('Signature 2 binéarisée');
+% figure
+% 
+% % Affichage de l'intensité des pixels traversant tout le rayon
+% subplot(2,1,1), plot(I_bin);
+% title('Signature 1 binéarisée');
+% 
+% % Affichage de l'intensité des pixels utiles
+% subplot(2,1,2), plot(s_CB);
+% title('Signature 2 binéarisée');
 
 
 
