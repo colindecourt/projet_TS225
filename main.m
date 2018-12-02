@@ -48,8 +48,9 @@ s_CB= binarisation(signature_surech);
 % Identification des différentes parties du code 
 [garde_norm1, sp_part1, garde_ctr, sp_part2, garde_norm2]=partitions_code(s_CB, u);
 
-% Construction des signatures théoriques 
-[Element_A, Element_B, Element_C]=signature_th();
+% Construction des signatures théoriques dilatées en fonction de u
+[element_A, element_B, element_C]=signature_th(u);
+
 
 
 
