@@ -1,13 +1,16 @@
 function [ u ] = unite_base( I)
 % Renvoie l'unité de base de la signature 
- % on veut que length(signature)*u soit divisible par 95
+ % on veut que length(signature)*fac_surech soit divisible par 95, et u
+ % sera le résultat de cette division
  
  [m n]=size(I);
- u=1;
+ fac_surech=1;
  
- while (round(m*u/95)~=(m*u/95))
-     u=u+1;
+ while (round(m*fac_surech/95)~=(m*fac_surech/95))
+     fac_surech=fac_surech+1;
  end 
+ 
+ u=m*fac_surech/95;
 
 end
 

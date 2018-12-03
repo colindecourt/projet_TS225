@@ -31,13 +31,13 @@ noirs = find(I_bin==1);
 new_p1=mat_rayon(:,noirs(1));
 new_p2=mat_rayon(:,noirs(end));
 
-mat_rayon = coord_rayon(new_p1, new_p2, A);
+mat_rayon = coord_rayon( new_p1, new_p2, A);
 
 % Nouvelle matrice intensité utile
 I=intensite(A, mat_rayon);
 
 % Unité de base u et échantillonage
-u=unite_base(I); % Peut être à optimiser car u=95 trés souvent
+u=unite_base(I); % Peut être à optimiser? 
 I_surech=surechantillonage(u, I); 
 
 % Binarisation de la nouvelle signature
