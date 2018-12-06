@@ -1,5 +1,7 @@
-function [ s_th] = signature_th( u )
-% Retourne 3 matrices contenant les 10 signatures de chaque élément
+function [ s_th, premier_chiffre] = data_th( u )
+% Retourne s_th, 3 matrices contenant les 10 signatures de chaque élément
+% et une matrice contenant les possibilités du premier chiffre en fonction
+% de la suite d'éléments
 
 B=1; 
 N=0; 
@@ -53,5 +55,25 @@ element_C_surech= surechantillonage(u, element_B);
 
 % s_th 
 s_th=[ element_A_surech element_B_surech element_C_surech];
+
+
+% Premier chiffre
+
+A=1; 
+B=2; 
+
+c_0=[A A A A A A];
+c_1=[A A B A B B];
+c_2=[A A B B A B];
+c_3=[A A B B B A];
+c_4=[A B A A B B];
+c_5=[A B B A A B];
+c_6=[A B B B A A];
+c_7=[A B A B A B];
+c_8=[A B A B B A];
+c_9=[A B B A B A];
+
+premier_chiffre=[c_0' c_1' c_2' c_3' c_4' c_5' c_6' c_7' c_8' c_9'];
+
 end
 

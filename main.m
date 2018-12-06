@@ -19,7 +19,7 @@ p2 =[x(2); y(2)]; % Dernier point tracé
 % Matrice contenant les coordonnées de chaque point
 mat_rayon = coord_rayon(p1, p2, A);
 
-% Matrice d'intensité binéarisée 
+% Intensité binéarisée 
 I=intensite(A, mat_rayon);
 I_bin=binarisation(I); 
 
@@ -31,9 +31,9 @@ noirs = find(I_bin==1);
 new_p1=mat_rayon(:,noirs(1));
 new_p2=mat_rayon(:,noirs(end));
 
-mat_rayon = coord_rayon( new_p1, new_p2, A);
+mat_rayon = coord_rayon( new_p1, new_p2, A); % enlever les points qui ont exactement les mêmes coordonnées 
 
-% Nouvelle matrice intensité utile
+% Nouvelle intensité utile
 I=intensite(A, mat_rayon);
 
 % Unité de base u et échantillonage
@@ -50,10 +50,10 @@ s_CB= binarisation(I_surech);
 sp=[sp_part1;sp_part2];
 
 % Construction des signatures théoriques dilatées en fonction de u
-[s_th]=signature_th(u);
+[s_th, premier_chiffre]=data_th(u);
 
 % Identification de l'élément et des chiffres 2 à 12
-chiffres=identification_chiffres(sp, s_th);
+chiffres=identification_chiffres(sp, s_th, premier_chiffre);
 
 
 %% Affichage 
