@@ -1,7 +1,7 @@
 function [ chiffres ] = identification_chiffres( sp, s_th, vec_chiffre1_th )
 % Identifie l'élement du code et ses chiffres 
 
-%% Identification des chiffres  
+%% Identification des chiffres de 1 à 12
 chiffres=[];
 elements=[];
 
@@ -38,10 +38,25 @@ for i=1:nb_chiffres
     elements=[elements element]; % Vecteur regroupant les éléments correspondant aux chiffres décodés
 end
   
+%% Premier chiffre 
 
-% Trouver le premier chiffre à partir des 6 premiers éléments 
-chiffre1_exp=elements(1:6);
-% A finir !! (une fois que le reste marchera)
+% Suite d'éléments exp
+chiffre1_exp=elements(1:7);
+chiffre1=1123; % AAAAAAATTTTTENTION NE MARCHE PAS 
+
+% Parcours des différentes séquences d'éléments 
+for j=1:10 
+    chiffre1_th=vec_chiffre1_th(:,j);
+    c=mesure_ressemblance(chiffre1_exp,chiffre1_th);
+    if c_max<c
+        c_max=c;
+        chiffre1=j;
+    end           
+end  
+
+chiffres=[chiffre1 chiffres];
+
+
 
 end
 
