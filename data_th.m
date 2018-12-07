@@ -3,8 +3,8 @@ function [ s_th, premier_chiffre] = data_th( u )
 % et une matrice contenant les possibilités du premier chiffre en fonction
 % de la suite d'éléments
 
-B=1; 
-N=0; 
+B=0; 
+N=1; 
 
 % Element A
 c_0=[B B B N N B N];

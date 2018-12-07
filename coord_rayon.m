@@ -1,8 +1,5 @@
-function [mat_coordR] = coord_rayon( p1, p2,A )
-% Trouver les points du segment rayon 
-
-% Calcul du nombre de points 
-N=floor(sqrt( (p1(1)-p2(1))^2 + (p1(2)-p2(2))^2 ));
+function [mat_coordR] = coord_rayon( p1, p2,N )
+% Trouver N points du segment rayon 
 
 % Matrice contenant les coordonnées entières de chaque point
 mat_coordR = [];

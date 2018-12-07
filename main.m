@@ -3,7 +3,7 @@ clear; close all; clc; dbstop if error;
 %% Images
 
  %Chargement des images
-A = imread('cb1.jpg');
+A = imread('cb2.png');
 imshow(A);
 
 % Prise du segment
@@ -17,31 +17,49 @@ p2 =[x(2); y(2)]; % Dernier point tracé
 % ---------------- Première signature ---------------------- %
 
 % Matrice contenant les coordonnées de chaque point
-mat_rayon = coord_rayon(p1, p2, A);
+
+% Calcul du nombre de points  (norme)
+N=floor(sqrt( (p1(1)-p2(1))^2 + (p1(2)-p2(2))^2 ));
+[mat_rayon]  = coord_rayon(p1, p2, N);
 
 % Intensité binéarisée 
 I=intensite(A, mat_rayon);
+figure 
+plot(I);
 I_bin=binarisation(I); 
 
 % -------------------- Signature utile ---------------------- % 
 
-% Récupération du rayon utile 
+% Récupération du premier et dernier point
 noirs = find(I_bin==1);
 
 new_p1=mat_rayon(:,noirs(1));
 new_p2=mat_rayon(:,noirs(end));
 
-mat_rayon = coord_rayon( new_p1, new_p2, A); % enlever les points qui ont exactement les mêmes coordonnées 
+% Calcul du nombre de points  (norme)
+N1=floor(sqrt( (new_p1(1)-new_p2(1))^2 + (new_p1(2)-new_p2(2))^2 ));
+
+%Calcul de u 
+u=0;
+while u*95<N1
+    u=u+1;
+end
+
+% Récupération du rayon utile dont la taille est multiple de 95
+N1=N1*95;
+mat_rayon = coord_rayon( new_p1, new_p2, N1); % enlever les points qui ont exactement les mêmes coordonnées 
+
 
 % Nouvelle intensité utile
 I=intensite(A, mat_rayon);
-
+figure
+plot(I);
 % Unité de base u et échantillonage
-u=unite_base(I); % Peut être à optimiser? 
-I_surech=surechantillonage(u, I); 
+%u=unite_base(I); % Peut être à optimiser? 
+%I_surech=surechantillonage(u, I); 
 
 % Binarisation de la nouvelle signature
-s_CB= binarisation(I_surech);
+s_CB= binarisation(I);
 
 %% Identification des chiffres codés dans la signature
 
@@ -57,15 +75,15 @@ chiffres=identification_chiffres(sp, s_th, premier_chiffre);
 
 
 %% Affichage 
-% figure
-% 
+% % figure
+% % 
 % % Affichage de l'intensité des pixels traversant tout le rayon
-% subplot(2,1,1), plot(I_bin);
-% title('Signature 1 binéarisée');
-% 
+% % subplot(2,1,1), plot(I_bin);
+% % title('Signature 1 binéarisée');
+% % 
 % % Affichage de l'intensité des pixels utiles
-% subplot(2,1,2), plot(s_CB);
-% title('Signature 2 binéarisée');
+% % subplot(2,1,2), plot(s_CB);
+% % title('Signature 2 binéarisée');
 
 
 

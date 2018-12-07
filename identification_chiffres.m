@@ -23,10 +23,10 @@ for i=1:nb_chiffres
     end 
     
     % A partir de l'indice du s_th correpondant au chiffre le plus problable, on en déduit le chiffre et l'élément
-    if nb<10
+    if nb<=10
         chiffre=nb; 
         element=1;
-    elseif nb<20
+    elseif nb<=20
         chiffre=nb-10; 
         element=2;
     else
