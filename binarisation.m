@@ -6,7 +6,7 @@ function [img_bin] = binarisation(img)
 seuil = otsu_method(img);
 
 % Binarisation
-img_bin = img>seuil;
+img_bin = img<seuil;
 
 end
 

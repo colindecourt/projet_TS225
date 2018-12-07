@@ -4,6 +4,9 @@ clear; close all; clc; dbstop if error;
 
  %Chargement des images
 A = imread('cb2.png');
+
+% Image en nuances de gris
+A=double(rgb2gray(A));
 imshow(A);
 
 % Prise du segment
@@ -24,8 +27,6 @@ N=floor(sqrt( (p1(1)-p2(1))^2 + (p1(2)-p2(2))^2 ));
 
 % Intensité binéarisée 
 I=intensite(A, mat_rayon);
-figure 
-plot(I);
 I_bin=binarisation(I); 
 
 % -------------------- Signature utile ---------------------- % 
@@ -52,8 +53,7 @@ mat_rayon = coord_rayon( new_p1, new_p2, N1); % enlever les points qui ont exact
 
 % Nouvelle intensité utile
 I=intensite(A, mat_rayon);
-figure
-plot(I);
+
 % Unité de base u et échantillonage
 %u=unite_base(I); % Peut être à optimiser? 
 %I_surech=surechantillonage(u, I); 
