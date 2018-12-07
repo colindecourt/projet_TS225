@@ -51,7 +51,7 @@ element_C=[c_0' c_1' c_2' c_3' c_4' c_5' c_6' c_7' c_8' c_9'];
 % Dilatation des signature en fonction de l'unité de base u
 element_A_surech= surechantillonage(u, element_A); 
 element_B_surech= surechantillonage(u, element_B); 
-element_C_surech= surechantillonage(u, element_B); 
+element_C_surech= surechantillonage(u, element_C); 
 
 % s_th 
 s_th=[ element_A_surech element_B_surech element_C_surech];
