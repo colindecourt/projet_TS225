@@ -27,7 +27,7 @@ N=floor(sqrt( (p1(1)-p2(1))^2 + (p1(2)-p2(2))^2 ));
 
 % Intensité binéarisée 
 I=intensite(A, mat_rayon);
-I_bin=binarisation(I); 
+I_bin=binarisation(I);  % ATTENTION DONNE PAS BON PREMIER CHIFFRE --> que des 1 
 
 % -------------------- Signature utile ---------------------- % 
 
