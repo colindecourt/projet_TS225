@@ -9,24 +9,24 @@ nb_chiffres=12;
 
 % Parcours de toutes les signatures partielles observées 
 for i=1:nb_chiffres 
-    c_max=0;
-    sp_part=sp(i,:);
 
+    sp_part=sp(:,i);
+    c_min=100; %initilisation haute
     % Parcours de chaque chiffre théorique 
     for j=1:30 
         s_th_part=s_th(:,j);
-        c=mesure_ressemblance(s_th_part,sp_part');
-        if c_max<c
-            c_max=c;
-            nb=j;
+        c=mesure_ressemblance(s_th_part,sp_part);
+        if c<c_min
+            c_min=c;
+            nb=j-1;
         end           
     end 
     
     % A partir de l'indice du s_th correpondant au chiffre le plus problable, on en déduit le chiffre et l'élément
-    if nb<=10
+    if nb<10
         chiffre=nb; 
         element=1;
-    elseif nb<=20
+    elseif nb<20
         chiffre=nb-10; 
         element=2;
     else
@@ -41,16 +41,17 @@ end
 %% Premier chiffre 
 
 % Suite d'éléments exp
-chiffre1_exp=elements(1:7);
-chiffre1=1123; % AAAAAAATTTTTENTION NE MARCHE PAS 
+chiffre1_exp=elements(1:6);
+
 
 % Parcours des différentes séquences d'éléments 
+c_min =100;
 for j=1:10 
     chiffre1_th=vec_chiffre1_th(:,j);
     c=mesure_ressemblance(chiffre1_exp,chiffre1_th);
-    if c_max<c
-        c_max=c;
-        chiffre1=j;
+    if c<c_min
+        c_min=c;
+        chiffre1=j-1;
     end           
 end  
 
