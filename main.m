@@ -3,7 +3,7 @@ clear; close all; clc; dbstop if error;
 %% Images
 
  %Chargement des images
-A = imread('cb2.png');
+A = imread('cb8.jpg');
 
 
 imshow(A);
@@ -60,18 +60,18 @@ I=intensite(A, mat_rayon);
 
 % Binarisation de la nouvelle signature
 s_CB= binarisation(I,seuil);
-s_CB(10)=0;
+
 %% Identification des chiffres codés dans la signature
 
 % Identification des différentes parties du code 
 [garde_norm1, sp_part1, garde_ctr, sp_part2, garde_norm2]=partitions_code(s_CB, u);
-sp=[sp_part1 sp_part2];
+sp=[sp_part1 ; sp_part2];
 
 % Construction des signatures théoriques dilatées en fonction de u
 [s_th, premier_chiffre]=data_th(u);
 
 % Identification de l'élément et des chiffres 2 à 12
-chiffres=identification_chiffres(sp, s_th, premier_chiffre);
+chiffres=identification_chiffres(sp, s_th, premier_chiffre,u);
 
 
 

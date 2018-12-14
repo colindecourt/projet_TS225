@@ -1,4 +1,4 @@
-function [ chiffres ] = identification_chiffres( sp, s_th, vec_chiffre1_th,u )
+function [ chiffres ] = identification_chiffres( sp, s_th, vec_chiffre1_th )
 % Identifie l'élement du code et ses chiffres 
 
 %% Identification des chiffres de 1 à 12
@@ -8,9 +8,9 @@ elements=[];
 nb_chiffres=12;
 
 % Parcours de toutes les signatures partielles observées 
-for i=0:nb_chiffres-1 
-    pas = 7;
-    sp_part=sp(i*pas*u+1:(i+1)*pas*u);
+for i=1:nb_chiffres 
+
+    sp_part=sp(:,i);
     c_min=100; %initilisation haute
     % Parcours de chaque chiffre théorique 
     for j=1:30 
@@ -51,7 +51,7 @@ for j=1:10
     c=mesure_ressemblance(chiffre1_exp,chiffre1_th);
     if c<c_min
         c_min=c;
-        chiffre1=j-1;
+        chiffre1=j;
     end           
 end  
 
