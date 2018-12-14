@@ -3,7 +3,7 @@ clear; close all; clc; dbstop if error;
 %% Images
 
  %Chargement des images
-A = imread('cb1.jpg');
+A = imread('cb3.jpg');
 
 
 imshow(A);
@@ -82,17 +82,36 @@ chiffres=identification_chiffres(sp, s_th, premier_chiffre,u);
 sigma_g=3;  
 sigma_t= 3;
 
-% ----- Filtre passe-bas gaussien pour calcul fonction de pondération ---- 
-      
-%Matrice du filtre réduite aux valeurs probables de la gaussienne
-[X, Y] = meshgrid(floor(-length(I)/2*sigma_t):floor(length(I)/2*sigma_t), floor(-length(I)/2*sigma_t):floor(length(I)/2*sigma_t)); 
+[X, Y] = meshgrid(floor(-3*sigma_t):floor(3*sigma_t));
 
-%Fonction gaussienne 2D
+% ----- Filtre de Canny pour calculer les vecteurs gradient -----
+
+s1=meshgrid((-2:2)); % Signal de référence utile pour normalisation
+
+% Dérivée horizontale de la gaussienne
+canny_x=(-X/(2*pi*sigma_g^4)*exp(-(X.^2+Y.^2)/(2*sigma_g^2))); % Quand on échantillone continu -> pb coeff donc normaliser
+%canny_x = canny_x/conv2(canny_x,s1,'same'); % Normalisation d'un dérivateur 
+
+% Dérivée verticale de la gaussienne
+canny_y=(-Y/(2*pi*sigma_g^4)*exp(-(X.^2+Y.^2)/(2*sigma_g^2)));
+%canny_y=canny_y/conv2(canny_y,s1,'same');
+
+% Gradients de I
+gradI_x = conv2(A,canny_x, 'same');
+gradI_y = conv2(A,canny_y, 'same');
+
+% Normalisation du gradient 
+
+
+% ----- Filtre passe-bas gaussien pour calcul fonction de pondération ---- 
+
+
+% Fonction gaussienne 2D
 passe_bas = (1/(2*pi*sigma_t^2)*exp((-X.^2-Y.^2)/(2*sigma_t^2))); 
-passe_bas = passe_bas/(sum(sum(passe_bas)));
+passe_bas = passe_bas/(sum(sum(passe_bas))); % Normailsation OK pour passe bas MAIS pas pour dérivée!
 
 % Fonction de pondération
-W = conv2(I,passe_bas, 'same');
+W = conv2(A,passe_bas, 'same');
 
 % Affichage
 figure,
@@ -103,16 +122,11 @@ hold off
 title('I filtrée par passe bas');
 
 
-% ----- Filtre de Canny pour calculer les vecteurs gradient -----
+% ----- Mesure de cohérence -----
 
-
-
-
-
-
-
-
-
+Txx=conv2(W, gradI_x.^2);
+Tyy=conv2(W, gradI_y.^2);
+Txy=conv2(W, gradI_x*gradI_x);
 
 
 
