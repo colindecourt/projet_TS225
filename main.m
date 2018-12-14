@@ -3,7 +3,7 @@ clear; close all; clc; dbstop if error;
 %% Images
 
  %Chargement des images
-A = imread('cb3.jpg');
+A = imread('cb2.png');
 
 
 imshow(A);
