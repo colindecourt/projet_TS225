@@ -75,6 +75,35 @@ chiffres=identification_chiffres(sp, s_th, premier_chiffre,u);
 
 
 
+%% Segmentation en régions d'intêret
+
+% Paramètres d'échelle et d'espace %  A CHANGER !!
+
+sigma_g=3;  
+sigma_t= 3;
+
+% ----- Filtre passe-bas gaussien pour calcul fonction de pondération ---- 
+      
+%Matrice du filtre réduite aux valeurs probables de la gaussienne
+[X, Y] = meshgrid(floor(-length(I)/2*sigma_t):floor(length(I)/2*sigma_t), floor(-length(I)/2*sigma_t):floor(length(I)/2*sigma_t)); 
+
+%Fonction gaussienne 2D
+passe_bas = (1/(2*pi*sigma_t^2)*exp((-X.^2-Y.^2)/(2*sigma_t^2))); 
+passe_bas = passe_bas/(sum(sum(passe_bas)));
+
+% Fonction de pondération
+W = conv2(I,passe_bas, 'same');
+
+% Affichage
+figure,
+plot(I)
+hold on
+plot(W)
+hold off
+title('I filtrée par passe bas');
+
+
+% ----- Filtre de Canny pour calculer les vecteurs gradient -----
 
 
 
@@ -83,3 +112,20 @@ chiffres=identification_chiffres(sp, s_th, premier_chiffre,u);
 
 
 
+
+
+
+
+
+
+
+
+
+% %¨Passe bas
+% c=0;
+% x = 1:1:10; % Changer le x
+% passe_bas = gaussmf(x,[sigma_t c]);
+% 
+% % Fonction de pondération
+% W=conv(I, passe_bas);
+% 
