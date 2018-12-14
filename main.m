@@ -3,7 +3,7 @@ clear; close all; clc; dbstop if error;
 %% Images
 
  %Chargement des images
-A = imread('cb2.png');
+A = imread('cb1.jpg');
 
 
 imshow(A);
@@ -60,18 +60,50 @@ I=intensite(A, mat_rayon);
 
 % Binarisation de la nouvelle signature
 s_CB= binarisation(I,seuil);
-s_CB(10)=0;
+
 %% Identification des chiffres codés dans la signature
 
 % Identification des différentes parties du code 
 [garde_norm1, sp_part1, garde_ctr, sp_part2, garde_norm2]=partitions_code(s_CB, u);
-sp=[sp_part1 sp_part2];
+sp=[sp_part1 ; sp_part2];
 
 % Construction des signatures théoriques dilatées en fonction de u
 [s_th, premier_chiffre]=data_th(u);
 
 % Identification de l'élément et des chiffres 2 à 12
-chiffres=identification_chiffres(sp, s_th, premier_chiffre);
+chiffres=identification_chiffres(sp, s_th, premier_chiffre,u);
+
+
+
+%% Segmentation en régions d'intêret
+
+% Paramètres d'échelle et d'espace %  A CHANGER !!
+
+sigma_g=3;  
+sigma_t= 3;
+
+% ----- Filtre passe-bas gaussien pour calcul fonction de pondération ---- 
+      
+%Matrice du filtre réduite aux valeurs probables de la gaussienne
+[X, Y] = meshgrid(floor(-length(I)/2*sigma_t):floor(length(I)/2*sigma_t), floor(-length(I)/2*sigma_t):floor(length(I)/2*sigma_t)); 
+
+%Fonction gaussienne 2D
+passe_bas = (1/(2*pi*sigma_t^2)*exp((-X.^2-Y.^2)/(2*sigma_t^2))); 
+passe_bas = passe_bas/(sum(sum(passe_bas)));
+
+% Fonction de pondération
+W = conv2(I,passe_bas, 'same');
+
+% Affichage
+figure,
+plot(I)
+hold on
+plot(W)
+hold off
+title('I filtrée par passe bas');
+
+
+% ----- Filtre de Canny pour calculer les vecteurs gradient -----
 
 
 
@@ -83,3 +115,17 @@ chiffres=identification_chiffres(sp, s_th, premier_chiffre);
 
 
 
+
+
+
+
+
+
+% %¨Passe bas
+% c=0;
+% x = 1:1:10; % Changer le x
+% passe_bas = gaussmf(x,[sigma_t c]);
+% 
+% % Fonction de pondération
+% W=conv(I, passe_bas);
+% 
