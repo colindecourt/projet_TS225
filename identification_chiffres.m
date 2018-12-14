@@ -51,7 +51,7 @@ for j=1:10
     c=mesure_ressemblance(chiffre1_exp,chiffre1_th);
     if c<c_min
         c_min=c;
-        chiffre1=j-1;
+        chiffre1=j;
     end           
 end  
 
