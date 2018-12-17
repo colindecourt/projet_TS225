@@ -12,15 +12,18 @@ imshow(A);
 A=double(rgb2gray(A));
 
 [y_max, x_max] = size(A);
-i=0;
-while(i<30)
+
+while(true)
     [seg, p, p_lim_gauche, p_lim_droite,angle_aleatoire] = lancer_aleatoire(A);
-    if(p_lim_gauche(1)<x_max && p_lim_gauche(2)<y_max && p_lim_gauche(1)>1 && p_lim_gauche(2)>1 && p_lim_droite(1)<x_max && p_lim_droite(2)<y_max && p_lim_droite(1)>1 && p_lim_droite(2)>1)   
-        hold on
-        plot(p(1),p(2),'or');
-        plot(seg(1,:),seg(2,:),'y')
-        p1 = p_lim_gauche;
-        p2 = p_lim_droite;
+    if(p_lim_gauche(1)<x_max && p_lim_gauche(2)<y_max && p_lim_gauche(1)>1 && p_lim_gauche(2)>1 && p_lim_droite(1)<x_max && p_lim_droite(2)<y_max && p_lim_droite(1)>1 && p_lim_droite(2)>1)
+        if(A(round(p_lim_gauche(2)),round(p_lim_gauche(1)))>227 && A(round(p_lim_droite(2)),round(p_lim_droite(1)))>227)
+            hold on
+            plot(p(1),p(2),'or');
+            plot(seg(1,:),seg(2,:),'y')
+            p1 = p_lim_gauche;
+            p2 = p_lim_droite;
+            break;
+        end
     end
     i=i+1;
     
