@@ -1,5 +1,5 @@
 clear; close all; clc; dbstop if error;
-    
+
 %% Images
 
  %Chargement des images
@@ -11,77 +11,105 @@ imshow(Img);
 % Image en nuances de gris
 Img=double(rgb2gray(Img));
 
-% Prise du segment
-[x, y] = ginput(2); 
+% [y_max, x_max] = size(A);
+% i=0;
+% while(i<30)
+%     [seg, p, p_lim_gauche, p_lim_droite,angle_aleatoire] = lancer_aleatoire(A);
+%     if(p_lim_gauche(1)<x_max && p_lim_gauche(2)<y_max && p_lim_gauche(1)>1 && p_lim_gauche(2)>1 && p_lim_droite(1)<x_max && p_lim_droite(2)<y_max && p_lim_droite(1)>1 && p_lim_droite(2)>1)
+%         %if(A(round(p_lim_gauche(2)),round(p_lim_gauche(1)))>227 && A(round(p_lim_droite(2)),round(p_lim_droite(1)))>227)
+%             hold on
+%             plot(p(1),p(2),'or');
+%             plot(seg(1,:),seg(2,:),'y')
+%             p1 = p_lim_gauche;
+%             p2 = p_lim_droite;
+%            % break;
+%         %end
+%     end
+%     i=i+1;
+%     
+% end
 
-p1 =[x(1); y(1)]; % Premier point tracé
-p2 =[x(2); y(2)]; % Dernier point tracé
+%Prise du segment
+[x, y] = ginput(2);
 
-%% Extraction de la signature le long du rayon
+p1 =[x(1); y(1)]; % Premier point tracï¿½
+p2 =[x(2); y(2)]; % Dernier point tracï¿½
 
-% ---------------- Première signature ---------------------- %
+% Extraction de la signature le long du rayon
 
-% Matrice contenant les coordonnées de chaque point
+% ---------------- Premiï¿½re signature ---------------------- %
+
+% Matrice contenant les coordonnï¿½es de chaque point
 
 % Calcul du nombre de points  (norme)
 N=floor(sqrt( (p1(1)-p2(1))^2 + (p1(2)-p2(2))^2 ));
 [mat_rayon]  = coord_rayon(p1, p2, N);
 
-% Intensité binéarisée 
-I=intensite(Img, mat_rayon);
-% Determination du seuil avec la méthode de Otsu
+hold on 
+plot(mat_rayon(1,:),mat_rayon(2,:),'r');
+
+% Intensitï¿½ binï¿½arisï¿½e
+I=intensite(A, mat_rayon);
+% Determination du seuil avec la mï¿½thode de Otsu
 seuil = otsu_method(I);
-I_bin=binarisation(I,seuil);  % ATTENTION DONNE PAS BON PREMIER CHIFFRE --> que des 1 
+I_bin=binarisation(I,seuil);  % ATTENTION DONNE PAS BON PREMIER CHIFFRE --> que des 1
 
-% -------------------- Signature utile ---------------------- % 
+% -------------------- Signature utile ---------------------- %
 
-% Récupération du premier et dernier point
+% Rï¿½cupï¿½ration du premier et dernier point
 noirs = find(I_bin==0);
 
 new_p1=mat_rayon(:,noirs(1));
 new_p2=mat_rayon(:,noirs(end));
 
+plot(new_p1(1),new_p1(2),'yo');
+plot(new_p2(1),new_p2(2),'yo');
 % Calcul du nombre de points  (norme)
 N1=floor(sqrt( (new_p1(1)-new_p2(1))^2 + (new_p1(2)-new_p2(2))^2 ));
 
-%Calcul de u 
+%Calcul de u
 u=0;
 while u*95<N1
     u=u+1;
 end
 
-% Récupération du rayon utile dont la taille est multiple de 95
+% Rï¿½cupï¿½ration du rayon utile dont la taille est multiple de 95
 N1=u*95;
-mat_rayon = coord_rayon( new_p1, new_p2, N1); % enlever les points qui ont exactement les mêmes coordonnées 
+mat_rayon = coord_rayon( new_p1, new_p2, N1); % enlever les points qui ont exactement les mï¿½mes coordonnï¿½es
 
 
-% Nouvelle intensité utile
+% Nouvelle intensitï¿½ utile
 I=intensite(Img, mat_rayon);
 
 % Binarisation de la nouvelle signature
 s_CB= binarisation(I,seuil);
 
-%% Identification des chiffres codés dans la signature
+%% Identification des chiffres codï¿½s dans la signature
 
-% Identification des différentes parties du code 
+% Identification des diffï¿½rentes parties du code
 [garde_norm1, sp_part1, garde_ctr, sp_part2, garde_norm2]=partitions_code(s_CB, u);
 sp=[sp_part1 ; sp_part2];
 
-% Construction des signatures théoriques dilatées en fonction de u
+% Construction des signatures thï¿½oriques dilatï¿½es en fonction de u
 [s_th, premier_chiffre]=data_th(u);
 
-% Identification de l'élément et des chiffres 2 à 12
+% Identification de l'ï¿½lï¿½ment et des chiffres 2 ï¿½ 12
 chiffres=identification_chiffres(sp, s_th, premier_chiffre,u);
+if(chiffres == 0)
+    disp('Ceci n est pas un code barre');
+else
+    disp(chiffres);
+end
 
 
 
-%% Segmentation en régions d'intêret
+%% Segmentation en rï¿½gions d'intï¿½ret
 
-% Paramètres d'échelle et d'espace
+% Paramï¿½tres d'ï¿½chelle et d'espace
 
 sigma_g=1;  
 sigma_t= 15;
 
-% Zones d'intêret
+% Zones d'intï¿½ret
 Dbin = zone_interet(Img, sigma_g, sigma_t);
 
