@@ -28,11 +28,11 @@ sigma_t= 15 ;
 % Zones d'int�ret
 Dbin = zone_interet(A, sigma_g, sigma_t);
 [D_bin_bw, num] = bwlabel(Dbin);
-[seg,p_centre] = trouve_code_barre(D_bin_bw,num);
+[p_centre,seg = trouve_code_barre(D_bin_bw,num);
 figure
 imshow(B);
 hold on 
-plot(p_centre(1),p_centre(2),'yo');
+plot(p_cent
 plot(seg(1,:),seg(2,:),'r');
 % Extraction de la signature le long du rayon
 

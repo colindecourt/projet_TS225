@@ -1,4 +1,4 @@
-function [seg,p_centre,p_lim_gauche,p_lim_droite,angle_aleatoire] = lancer_aleatoire(image)
+function [seg] = lancer_aleatoire(image,p_centre)
 %Fonction permettant d'effectuer un tirage aléatoire d'une ligne
 % traversant le code barre
 
@@ -8,8 +8,8 @@ function [seg,p_centre,p_lim_gauche,p_lim_droite,angle_aleatoire] = lancer_aleat
 
 % On tire un point aléatoire dans l'image
 
-x_aleatoire = randi([1 x_max]);
-y_aleatoire = randi([1 y_max]);
+x_aleatoire = p_centre(1);
+y_aleatoire = p_centre(2);
 
 
 

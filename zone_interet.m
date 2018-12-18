@@ -9,9 +9,11 @@ function [ Dbin ] = zone_interet( Img, sigma_g, sigma_t)
 % Dérivée horizontale de la gaussienne
 canny_x = -X.*exp(-(X.^2+Y.^2)/(2*sigma_g^2))/(2^pi*sigma_g^4); % Quand on échantillone continu -> pb coeff donc normaliser
 
+figure, surf(canny_x)
 % Dérivée verticale de la gaussienne
 canny_y = -Y.*exp(-(X.^2+Y.^2)/(2*sigma_g^2))/(2^pi*sigma_g^4);
 
+figure, surf(canny_y)
 % Gradients de I
 gradIx = conv2(Img,canny_x, 'same');
 gradIy = conv2(Img,canny_y, 'same');
@@ -32,7 +34,7 @@ gradIy_norm=gradIy./sum(sum(sqrt(gradIx.^2 + gradIy.^2)));
 W_passe_bas = exp((-X.^2-Y.^2)/(2*sigma_t^2))/(2*pi*sigma_t^2); 
 W_passe_bas = W_passe_bas/(sum(sum(W_passe_bas))); % Normailsation OK pour passe bas MAIS pas pour dérivée!
 
-
+figure, surf(W_passe_bas)
 %% ----- Mesure de cohérence -----
 
 % Composantes du tenseur de structure 
