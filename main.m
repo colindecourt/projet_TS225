@@ -3,13 +3,13 @@ clear; close all; clc; dbstop if error;
 %% Images
 
  %Chargement des images
-A = imread('cb3.jpg');
+Img = imread('cb3.jpg');
 
 
-imshow(A);
+imshow(Img);
 
 % Image en nuances de gris
-A=double(rgb2gray(A));
+Img=double(rgb2gray(Img));
 
 % Prise du segment
 [x, y] = ginput(2); 
@@ -28,7 +28,7 @@ N=floor(sqrt( (p1(1)-p2(1))^2 + (p1(2)-p2(2))^2 ));
 [mat_rayon]  = coord_rayon(p1, p2, N);
 
 % Intensité binéarisée 
-I=intensite(A, mat_rayon);
+I=intensite(Img, mat_rayon);
 % Determination du seuil avec la méthode de Otsu
 seuil = otsu_method(I);
 I_bin=binarisation(I,seuil);  % ATTENTION DONNE PAS BON PREMIER CHIFFRE --> que des 1 
@@ -56,7 +56,7 @@ mat_rayon = coord_rayon( new_p1, new_p2, N1); % enlever les points qui ont exact
 
 
 % Nouvelle intensité utile
-I=intensite(A, mat_rayon);
+I=intensite(Img, mat_rayon);
 
 % Binarisation de la nouvelle signature
 s_CB= binarisation(I,seuil);
@@ -77,69 +77,11 @@ chiffres=identification_chiffres(sp, s_th, premier_chiffre,u);
 
 %% Segmentation en régions d'intêret
 
-% Paramètres d'échelle et d'espace %  A CHANGER !!
+% Paramètres d'échelle et d'espace
 
-sigma_g=3;  
-sigma_t= 3;
+sigma_g=1;  
+sigma_t= 15;
 
-[X, Y] = meshgrid(floor(-3*sigma_t):floor(3*sigma_t));
+% Zones d'intêret
+Dbin = zone_interet(Img, sigma_g, sigma_t);
 
-% ----- Filtre de Canny pour calculer les vecteurs gradient -----
-
-s1=meshgrid((-2:2)); % Signal de référence utile pour normalisation
-
-% Dérivée horizontale de la gaussienne
-canny_x=(-X/(2*pi*sigma_g^4)*exp(-(X.^2+Y.^2)/(2*sigma_g^2))); % Quand on échantillone continu -> pb coeff donc normaliser
-%canny_x = canny_x/conv2(canny_x,s1,'same'); % Normalisation d'un dérivateur 
-
-% Dérivée verticale de la gaussienne
-canny_y=(-Y/(2*pi*sigma_g^4)*exp(-(X.^2+Y.^2)/(2*sigma_g^2)));
-%canny_y=canny_y/conv2(canny_y,s1,'same');
-
-% Gradients de I
-gradI_x = conv2(A,canny_x, 'same');
-gradI_y = conv2(A,canny_y, 'same');
-
-% Normalisation du gradient 
-
-
-% ----- Filtre passe-bas gaussien pour calcul fonction de pondération ---- 
-
-
-% Fonction gaussienne 2D
-passe_bas = (1/(2*pi*sigma_t^2)*exp((-X.^2-Y.^2)/(2*sigma_t^2))); 
-passe_bas = passe_bas/(sum(sum(passe_bas))); % Normailsation OK pour passe bas MAIS pas pour dérivée!
-
-% Fonction de pondération
-W = conv2(A,passe_bas, 'same');
-
-% Affichage
-figure,
-plot(I)
-hold on
-plot(W)
-hold off
-title('I filtrée par passe bas');
-
-
-% ----- Mesure de cohérence -----
-
-Txx=conv2(W, gradI_x.^2);
-Tyy=conv2(W, gradI_y.^2);
-Txy=conv2(W, gradI_x*gradI_x);
-
-
-
-
-
-
-
-
-% %¨Passe bas
-% c=0;
-% x = 1:1:10; % Changer le x
-% passe_bas = gaussmf(x,[sigma_t c]);
-% 
-% % Fonction de pondération
-% W=conv(I, passe_bas);
-% 
