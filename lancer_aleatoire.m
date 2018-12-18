@@ -20,7 +20,7 @@ angle_aleatoire = randi([-40 40]);
 
 
 % Longueur de segment aléatoire
-longueur_aleatoire = randi([600 900]);
+longueur_aleatoire = randi([200 400]);
 
 % On trace de part et d'autre du centre de l'image un droite avec un
 % certain angle

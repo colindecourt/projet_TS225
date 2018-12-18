@@ -3,7 +3,7 @@ clear; close all; clc; dbstop if error;
 %% Images
 
 %Chargement des images
-A = imread('cb3.jpg');
+A = imread('cb8.jpg');
 
 
 imshow(A);
@@ -11,29 +11,30 @@ imshow(A);
 % Image en nuances de gris
 A=double(rgb2gray(A));
 
-[y_max, x_max] = size(A);
+% [y_max, x_max] = size(A);
+% i=0;
+% while(i<30)
+%     [seg, p, p_lim_gauche, p_lim_droite,angle_aleatoire] = lancer_aleatoire(A);
+%     if(p_lim_gauche(1)<x_max && p_lim_gauche(2)<y_max && p_lim_gauche(1)>1 && p_lim_gauche(2)>1 && p_lim_droite(1)<x_max && p_lim_droite(2)<y_max && p_lim_droite(1)>1 && p_lim_droite(2)>1)
+%         %if(A(round(p_lim_gauche(2)),round(p_lim_gauche(1)))>227 && A(round(p_lim_droite(2)),round(p_lim_droite(1)))>227)
+%             hold on
+%             plot(p(1),p(2),'or');
+%             plot(seg(1,:),seg(2,:),'y')
+%             p1 = p_lim_gauche;
+%             p2 = p_lim_droite;
+%            % break;
+%         %end
+%     end
+%     i=i+1;
+%     
+% end
 
-while(true)
-    [seg, p, p_lim_gauche, p_lim_droite,angle_aleatoire] = lancer_aleatoire(A);
-    if(p_lim_gauche(1)<x_max && p_lim_gauche(2)<y_max && p_lim_gauche(1)>1 && p_lim_gauche(2)>1 && p_lim_droite(1)<x_max && p_lim_droite(2)<y_max && p_lim_droite(1)>1 && p_lim_droite(2)>1)
-        if(A(round(p_lim_gauche(2)),round(p_lim_gauche(1)))>227 && A(round(p_lim_droite(2)),round(p_lim_droite(1)))>227)
-            hold on
-            plot(p(1),p(2),'or');
-            plot(seg(1,:),seg(2,:),'y')
-            p1 = p_lim_gauche;
-            p2 = p_lim_droite;
-            break;
-        end
-    end
-    i=i+1;
-    
-end
-% Prise du segment
-% [x, y] = ginput(2);
-%
-% p1 =[x(1); y(1)]; % Premier point tracé
-% p2 =[x(2); y(2)]; % Dernier point tracé
-%
+%Prise du segment
+[x, y] = ginput(2);
+
+p1 =[x(1); y(1)]; % Premier point tracé
+p2 =[x(2); y(2)]; % Dernier point tracé
+
 % Extraction de la signature le long du rayon
 
 % ---------------- Première signature ---------------------- %
@@ -43,6 +44,9 @@ end
 % Calcul du nombre de points  (norme)
 N=floor(sqrt( (p1(1)-p2(1))^2 + (p1(2)-p2(2))^2 ));
 [mat_rayon]  = coord_rayon(p1, p2, N);
+
+hold on 
+plot(mat_rayon(1,:),mat_rayon(2,:),'r');
 
 % Intensité binéarisée
 I=intensite(A, mat_rayon);
@@ -58,6 +62,8 @@ noirs = find(I_bin==0);
 new_p1=mat_rayon(:,noirs(1));
 new_p2=mat_rayon(:,noirs(end));
 
+plot(new_p1(1),new_p1(2),'yo');
+plot(new_p2(1),new_p2(2),'yo');
 % Calcul du nombre de points  (norme)
 N1=floor(sqrt( (new_p1(1)-new_p2(1))^2 + (new_p1(2)-new_p2(2))^2 ));
 
@@ -89,7 +95,11 @@ sp=[sp_part1 ; sp_part2];
 
 % Identification de l'élément et des chiffres 2 à 12
 chiffres=identification_chiffres(sp, s_th, premier_chiffre,u);
-
+if(chiffres == 0)
+    disp('Ceci n est pas un code barre');
+else
+    disp(chiffres);
+end
 
 
 % %% Segmentation en régions d'intêret

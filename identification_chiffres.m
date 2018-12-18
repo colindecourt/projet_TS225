@@ -57,8 +57,26 @@ end
 
 chiffres=[chiffre1 chiffres];
 
+% Test du dernier chiffres
+somme_impaire=0;
+for i=1:2:length(chiffres)-2
+    somme_impaire = somme_impaire + chiffres(i);
+end
 
 
+somme_pair=0;
+for i=2:2:length(chiffres)
+    somme_pair = somme_pair + chiffres(i);
+end
+
+complement_10 = 10 - chiffres(end);
+
+test_val = 3*somme_pair + somme_impaire;
+
+if(mod(test_val,10) ~= complement_10)
+    chiffres = 0;
+end
+    
 end
 
 
