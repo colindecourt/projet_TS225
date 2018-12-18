@@ -3,13 +3,13 @@ clear; close all; clc; dbstop if error;
 %% Images
 
  %Chargement des images
-Img = imread('cb3.jpg');
+A = imread('cb3.jpg');
 
 
-imshow(Img);
+imshow(A);
 
 % Image en nuances de gris
-Img=double(rgb2gray(Img));
+A=double(rgb2gray(A));
 
 % [y_max, x_max] = size(A);
 % i=0;
@@ -79,7 +79,7 @@ mat_rayon = coord_rayon( new_p1, new_p2, N1); % enlever les points qui ont exact
 
 
 % Nouvelle intensit� utile
-I=intensite(Img, mat_rayon);
+I=intensite(A, mat_rayon);
 
 % Binarisation de la nouvelle signature
 s_CB= binarisation(I,seuil);
@@ -111,5 +111,5 @@ sigma_g=1;
 sigma_t= 15;
 
 % Zones d'int�ret
-Dbin = zone_interet(Img, sigma_g, sigma_t);
+Dbin = zone_interet(A, sigma_g, sigma_t);
 
