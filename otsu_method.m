@@ -9,6 +9,14 @@ for k = 0:255
     hist(k+1)=sum(data==k);
 end
 
+
+figure,
+plot(hist);
+title('Histogramme');
+xlabel('Niveau de gris');
+ylabel('Nombre de pixels');
+
+
 %% Calcul de w  bh y  
  
 num_w = 0;

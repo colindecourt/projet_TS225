@@ -12,6 +12,7 @@ for i=0:nb_chiffres-1
     pas = 7;
     sp_part=sp(i*pas*u+1:(i+1)*pas*u);
     c_min=100; %initilisation haute
+    
     % Parcours de chaque chiffre théorique 
     for j=1:30 
         s_th_part=s_th(:,j);
@@ -57,7 +58,7 @@ end
 
 chiffres=[chiffre1 chiffres];
 
-% Test du dernier chiffres
+%% Test du dernier chiffre
 somme_impaire=0;
 for i=1:2:length(chiffres)-2
     somme_impaire = somme_impaire + chiffres(i);
