@@ -1,4 +1,4 @@
-function [chiffres,seg,new_p1,new_p2,x_centre,y_centre] = detection_manuel(img)
+function [chiffres,seg,new_p1,new_p2,x_centre,y_centre,Dbin] = detection_automatique(img)
 %Fonction utile pour la détection manuelle de l'interface 
 
  %Chargement des images

@@ -3,7 +3,7 @@ clear; close all; clc; dbstop if error;
 %% Images
 
  %Chargement des images
-B = imread('cb7.jpg');
+B = imread('../BDD_CODE_BARRE/livre3.jpg');
 
 
 % Image en nuances de gris
@@ -23,8 +23,8 @@ A=double(rgb2gray(B));
 
 % Param�tres d'�chelle et d'espace
 
-sigma_g=1;  
-sigma_t= 15 ;
+sigma_g=2;  
+sigma_t= 14 ;
 
 % Zones d'int�ret
 Dbin = zone_interet(A, sigma_g, sigma_t);
